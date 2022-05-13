@@ -1,4 +1,8 @@
-# Editado por Kevin Valdez - A01254336
+# Editado por 
+# Kevin Valdez - A01254336
+# Daniela Ruiz - A01254229
+# Ximena López - A01254325
+# Gustavo Betancourt - A01252532
 
 from turtle import *
 import turtle
