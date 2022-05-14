@@ -22,28 +22,34 @@ path = Turtle(visible=False)
 writer = Turtle(visible=False)
 aim = vector(5, 0)
 pacman = vector(-40, -80)
-ghosts = [ # Modificamos los vectores de los fantasmas desde su inicio para que se muevan mas rapido
-    [vector(-180, 160), vector(9, 0)],
-    [vector(-180, -160), vector(0, 9)],
-    [vector(100, 160), vector(0, -9)],
-    [vector(100, -160), vector(-9, 0)],
+ghosts1 = [
+    [vector(-180, 160), vector(5, 0)]
 ]
-
-# Modificamos el tablero un poco para ser mas parecido al tablero clasico
-tiles = [ 
+ghosts2 = [
+   
+    [vector(-180, -160), vector(0, 5)]
+]
+ghosts3 = [
+    
+    [vector(100, 160), vector(0, -5)]
+]
+ghosts4 = [
+    [vector(100, -160), vector(-5, 0)]
+]
+tiles = [
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0,
     0, 1, 0, 0, 1, 0, 0, 1, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0,
     0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0,
     0, 1, 0, 0, 1, 0, 1, 0, 0, 0, 1, 0, 1, 0, 0, 1, 0, 0, 0, 0,
     0, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 0, 0, 0, 0,
-    0, 0, 0, 0, 1, 0, 0, 1, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 1, 0, 1, 1, 1, 1, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0,
+    0, 1, 0, 0, 1, 0, 0, 1, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0,
+    0, 1, 0, 0, 1, 0, 1, 1, 1, 1, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0,
     0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0,
-    0, 0, 0, 0, 1, 0, 1, 1, 1, 1, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 1, 0, 1, 1, 1, 1, 1, 0, 1, 0, 0, 1, 0, 0, 0, 0,
+    0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 1, 0, 1, 0, 0, 1, 0, 0, 0, 0,
     0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0,
-    0, 1, 0, 0, 1, 0, 0, 1, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0,
+    0, 1, 0, 0, 1, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0,
     0, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 0, 0, 0,
     0, 0, 1, 0, 1, 0, 1, 0, 0, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0,
     0, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 0, 0, 0, 0,
@@ -128,15 +134,57 @@ def move():
     goto(pacman.x + 10, pacman.y + 10)
     dot(20, 'yellow')
 
-    for point, course in ghosts:
+
+    """Se le implemento un sistema de rastreo a este fantasma rojo basado
+     en la distancia de este con respecto a pacman"""
+    for point, course in ghosts1:
         if valid(point + course):
             point.move(course)
         else:
-            options = [ # Modificamos los vectores de los fantasmas nuevamente para que su velocidad siga igual
-                vector(9, 0),
-                vector(-9, 0),
-                vector(0, 9),
-                vector(0, -9),
+            options = [
+                vector(5, 0),
+                vector(-5, 0),
+                vector(0, 5),
+                vector(0, -5),
+            ]
+            dx = pacman.x - point.x
+            dy = pacman.y -point.y
+            print(dy)
+            
+            if dx > 0:
+                plan  = options[0]
+                course.x = plan.x
+                course.y = plan.y
+            
+            elif dy > 0:
+                plan  = options[2]
+                course.x = plan.x
+                course.y = plan.y
+
+            if dx < 0:
+                plan  = options[1]
+                course.x = plan.x
+                course.y = plan.y  
+
+            elif dy < 0:
+                plan  = options[3]
+                course.x = plan.x
+                course.y = plan.y
+                    
+
+        up()
+        goto(point.x + 10, point.y + 10)
+        dot(20, 'red')
+
+    for point, course in ghosts2:
+        if valid(point + course):
+            point.move(course)
+        else:
+            options = [
+                vector(5, 0),
+                vector(-5, 0),
+                vector(0, 5),
+                vector(0, -5),
             ]
             plan = choice(options)
             course.x = plan.x
@@ -144,13 +192,61 @@ def move():
 
         up()
         goto(point.x + 10, point.y + 10)
-        dot(20, 'red')
+        dot(20, 'green')
+
+    for point, course in ghosts3:
+        if valid(point + course):
+            point.move(course)
+        else:
+            options = [
+                vector(5, 0),
+                vector(-5, 0),
+                vector(0, 5),
+                vector(0, -5),
+            ]
+            plan = choice(options)
+            course.x = plan.x
+            course.y = plan.y
+
+        up()
+        goto(point.x + 10, point.y + 10)
+        dot(20, 'orange')        
+
+    for point, course in ghosts4:
+        if valid(point + course):
+            point.move(course)
+        else:
+            options = [
+                vector(5, 0),
+                vector(-5, 0),
+                vector(0, 5),
+                vector(0, -5),
+            ]
+            plan = choice(options)
+            course.x = plan.x
+            course.y = plan.y
+
+        up()
+        goto(point.x + 10, point.y + 10)
+        dot(20, 'cyan')
 
     update()
 
-    for point, course in ghosts:
-        if abs(pacman - point) < 1:
+    for point, course in ghosts1:
+        if abs(pacman - point) < 20:
             return
+
+    for point, course in ghosts2:
+        if abs(pacman - point) < 20:
+            return
+
+    for point, course in ghosts3:
+        if abs(pacman - point) < 20:
+            return
+
+    for point, course in ghosts4:
+        if abs(pacman - point) < 20:
+            return                        
 
     ontimer(move, 100)
 
